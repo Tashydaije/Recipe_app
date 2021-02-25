@@ -1,7 +1,18 @@
-<h1>Login page<h2>
+<h1>Log In<h2>
 
 <%= form_with url: "/login_auth", method: :post do |form| %>
-  <%= form.label :query, "Search for:" %>
-  <%= form.text_field :query %>
-  <%= form.submit "Search" %>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.email_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password %>
+    <%= form.password_field :password %>
+  </div>
+
+  <div class="action">
+    <%= form.submit "Login" %>
+  </div>
 <% end %>
