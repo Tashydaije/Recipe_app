@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   resources :recipes
   resources :users
-  get 'login', to: 'users#login'
-  post 'login_auth', to: 'users#login_auth' 
+
+  root to: 'recipes#index'
+  get 'new', to: 'recipes#new'
+
+  get '/login',  to: 'sessions#new'
+  post '/login',  to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy' 
 end
