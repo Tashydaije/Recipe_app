@@ -10,6 +10,9 @@ class RecipesController < ApplicationController
 
   # GET /recipes/1 or /recipes/1.json
   def show
+    @recipe = Recipe.find(params[:id])
+    console
+  
   end
 
   # GET /recipes/new
@@ -25,10 +28,10 @@ class RecipesController < ApplicationController
   # POST /recipes or /recipes.json
   def create
     @recipe = Recipe.new(recipe_params)
-
+    @recipe.user_id = @current_user.id
     respond_to do |format|
       if @recipe.save
-        format.html { redirect_to user_recipe_path(@user, @recipe), notice: "Recipe was successfully created." }
+        format.html { redirect_to user_recipe_path(@current_user, @recipe), notice: "Recipe was successfully created." }
         format.json { render :show, status: :created, location: @recipe }
       else
         format.html { render :new, status: :unprocessable_entity }
