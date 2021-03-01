@@ -21,9 +21,27 @@
     <%= form.text_field :instructions %>
   </div>
 
-  <div class="field">
-    <%= form.label :ingredients %>
-    <%= form.text_field :ingredients %>
+  
+  <h3> Ingredients:</h3>
+  <div class="field"> 
+    <%= form.fields_for :recipe_ingredients do |ri|%>
+          
+            <%= ri.fields_for :ingredient do |i|%>
+            <div class="row">
+                <div class="col">
+                    <%= ri.label :name %>
+                    <%= i.text_field :name %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <%= ri.label :quantity %>
+                    <%= i.text_field :quantity %>
+                </div>
+            </div>
+            <%end%>   
+          
+    <%end%>
   </div>
 
   <div class="actions">
