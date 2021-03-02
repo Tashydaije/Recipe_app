@@ -2,6 +2,7 @@ class IngredientsController < ApplicationController
   before_action :set_ingredient, only: %i[ show edit update destroy ]
   before_action :logged_in_user
 
+  console
   # GET /ingredients or /ingredients.json
   def index
     @ingredients = Ingredient.all

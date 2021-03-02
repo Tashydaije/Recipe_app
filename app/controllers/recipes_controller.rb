@@ -18,7 +18,7 @@ class RecipesController < ApplicationController
   # GET /recipes/new
   def new
     @recipe = Recipe.new
-    5.times { @recipe.recipe_ingredients.build.build_ingredient}
+    2.times { @recipe.recipe_ingredients.build.build_ingredient}
   end
 
   # GET /recipes/1/edit
@@ -29,6 +29,7 @@ class RecipesController < ApplicationController
   def create
     @recipe = Recipe.new(recipe_params)
     @recipe.user_id = @current_user.id
+    @recipe.add_ingredient(params[:name])
     respond_to do |format|
       if @recipe.save
         format.html { redirect_to user_recipe_path(@current_user, @recipe), notice: "Recipe was successfully created." }
@@ -55,6 +56,7 @@ class RecipesController < ApplicationController
 
   # DELETE /recipes/1 or /recipes/1.json
   def destroy
+    Ingredient.destroy_ingredients(@recipe.id)
     @recipe.destroy
     respond_to do |format|
       format.html { redirect_to recipes_url, notice: "Recipe was successfully destroyed." }
