@@ -29,15 +29,20 @@ class RecipesController < ApplicationController
   def create
     @recipe = Recipe.new(recipe_params)
     @recipe.user_id = @current_user.id
-    @recipe.add_ingredient(params[:name])
+    @recipe.save!
+
+    RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: recipe_params["recipe_ingredients_attributes"]["0"]["ingredient_attributes"]["id"], quantity: recipe_params["recipe_ingredients_attributes"]["0"]["ingredient_attributes"]["quantity"] ) 
+    RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: recipe_params["recipe_ingredients_attributes"]["1"]["ingredient_attributes"]["id"], quantity: recipe_params["recipe_ingredients_attributes"]["0"]["ingredient_attributes"]["quantity"] )
+    # byebug
     respond_to do |format|
-      if @recipe.save
+      if @recipe.save!
         format.html { redirect_to user_recipe_path(@current_user, @recipe), notice: "Recipe was successfully created." }
         format.json { render :show, status: :created, location: @recipe }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @recipe.errors, status: :unprocessable_entity }
       end
+      
     end
   end
 
@@ -56,7 +61,7 @@ class RecipesController < ApplicationController
 
   # DELETE /recipes/1 or /recipes/1.json
   def destroy
-    Ingredient.destroy_ingredients(@recipe.id)
+    RecipeIngredient.destroy_ingredients(@recipe.id)
     @recipe.destroy
     respond_to do |format|
       format.html { redirect_to recipes_url, notice: "Recipe was successfully destroyed." }
@@ -72,7 +77,10 @@ class RecipesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def recipe_params
-      params.require(:recipe).permit(:name, :instructions, recipe_ingredients_attributes: [:id,
-        ingredient_attributes: [:name, :quantity]])
+      params.require(:recipe).permit(:name, :instructions, 
+      recipe_ingredients_attributes:
+       [  ingredient_attributes: 
+       [:id, :quantity]
+      ])
     end
 end

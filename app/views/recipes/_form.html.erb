@@ -29,13 +29,13 @@
             <%= ri.fields_for :ingredient do |i|%>
             <div class="row">
                 <div class="col">
-                    <%= i.label :name %>
-                    <%= i.text_field :name %>
+                    <%= ri.label :name %>
+                    <%= i.select( :id, Ingredient.all.collect{ |n| [n.name, n.id] }, { include_blank: true })%>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <%= i.label :quantity %>
+                    <%= ri.label :quantity %>
                     <%= i.number_field :quantity %>
                 </div>
             </div>
