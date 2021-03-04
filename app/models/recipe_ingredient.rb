@@ -1,8 +1,9 @@
 class RecipeIngredient < ApplicationRecord
-  attr_reader :ingredient_id, :name
+  #attr_reader :ingredient_id, :name
   belongs_to :recipe
   belongs_to :ingredient
 
+  validates :quantity, presence: true
   accepts_nested_attributes_for :ingredient
 
   def ingredient_attributes=(ingredient_attributes)

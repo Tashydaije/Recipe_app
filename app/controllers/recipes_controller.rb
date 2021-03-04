@@ -32,8 +32,12 @@ class RecipesController < ApplicationController
     @recipe.save!
 
     RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: recipe_params["recipe_ingredients_attributes"]["0"]["ingredient_attributes"]["id"], quantity: recipe_params["recipe_ingredients_attributes"]["0"]["ingredient_attributes"]["quantity"] ) 
-    RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: recipe_params["recipe_ingredients_attributes"]["1"]["ingredient_attributes"]["id"], quantity: recipe_params["recipe_ingredients_attributes"]["0"]["ingredient_attributes"]["quantity"] )
+    RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: recipe_params["recipe_ingredients_attributes"]["1"]["ingredient_attributes"]["id"], quantity: recipe_params["recipe_ingredients_attributes"]["1"]["ingredient_attributes"]["quantity"] )
     # byebug
+    Ingredient.update_attribute(@ingredient.id, @recipe_ingredients.id)
+
+    #byebug
+
     respond_to do |format|
       if @recipe.save!
         format.html { redirect_to user_recipe_path(@current_user, @recipe), notice: "Recipe was successfully created." }
