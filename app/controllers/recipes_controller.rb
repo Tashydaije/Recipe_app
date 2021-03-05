@@ -30,11 +30,14 @@ class RecipesController < ApplicationController
     @recipe = Recipe.new(recipe_params)
     @recipe.user_id = @current_user.id
     @recipe.save!
-
-    RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: recipe_params["recipe_ingredients_attributes"]["0"]["ingredient_attributes"]["id"], quantity: recipe_params["recipe_ingredients_attributes"]["0"]["ingredient_attributes"]["quantity"] ) 
-    RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: recipe_params["recipe_ingredients_attributes"]["1"]["ingredient_attributes"]["id"], quantity: recipe_params["recipe_ingredients_attributes"]["1"]["ingredient_attributes"]["quantity"] )
+    
+    @re = RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: recipe_params["recipe_ingredients_attributes"]["0"]["ingredient_attributes"]["id"], quantity: recipe_params["recipe_ingredients_attributes"]["0"]["ingredient_attributes"]["quantity"] ) 
+    Ingredient.update_attribute(@re.ingredient_id, @re.id)
+    @re = RecipeIngredient.create(recipe_id: @recipe.id, ingredient_id: recipe_params["recipe_ingredients_attributes"]["1"]["ingredient_attributes"]["id"], quantity: recipe_params["recipe_ingredients_attributes"]["1"]["ingredient_attributes"]["quantity"] )
+    Ingredient.update_attribute(@re.ingredient_id, @re.id)
     # byebug
-    Ingredient.update_attribute(@ingredient.id, @recipe_ingredients.id)
+    
+    
 
     #byebug
 
@@ -83,7 +86,7 @@ class RecipesController < ApplicationController
     def recipe_params
       params.require(:recipe).permit(:name, :instructions, 
       recipe_ingredients_attributes:
-       [  ingredient_attributes: 
+       [ ingredient_attributes: 
        [:id, :quantity]
       ])
     end

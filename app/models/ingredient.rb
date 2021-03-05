@@ -18,12 +18,10 @@ class Ingredient < ApplicationRecord
     end
 
     def self.update_attribute(ingredient_id, recipe_ingredients_id)
-        @q = (Ingredient.find(ingredient_id: ingredient_id).quantity - RecipeIngredient.find(recipe_ingredients_id: recipe_ingredients_id).quantity)
-        @upd = Ingredient.update_attribute(:quantity, @q)
-
-        @upd.each do |u|
-            u.update_attribute
-        end
+        @ingredient = Ingredient.find(ingredient_id)
+        @q = (Ingredient.find(ingredient_id).quantity - RecipeIngredient.find(recipe_ingredients_id).quantity)
+        @ingredient.update_attribute(:quantity, @q)
+        
     end
 
 end
